@@ -69,12 +69,14 @@ func WithPublishOptionsContentType(contentType string) func(*PublishOptions) {
 	}
 }
 
-// WithPublishOptionsPersistentDelivery sets the message to persist. Transient messages will
+// WithPublishOptionsPersistentDelivery returns a function that sets the message to persist. Transient messages will
 // not be restored to durable queues, persistent messages will be restored to
 // durable queues and lost on non-durable queues during server restart. By default publishings
 // are transient
-func WithPublishOptionsPersistentDelivery(options *PublishOptions) {
-	options.DeliveryMode = Persistent
+func WithPublishOptionsPersistentDelivery(options *PublishOptions) func(options *PublishOptions) {
+	return func(options *PublishOptions) {
+		options.DeliveryMode = Persistent
+	}
 }
 
 // WithPublishOptionsExpiration returns a function that sets the expiry/TTL of a message. As per RabbitMq spec, it must be a
